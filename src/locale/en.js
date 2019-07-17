@@ -10,4 +10,5 @@ export default {
   'app.auth.haveAccount': 'Have an account?',
   'app.auth.haveNotAccount': "Don't have an account?",
   'app.auth.pasteSecret': 'Paste your secret',
+  'app.logo.subtitle': 'Cheer your imagination',
 };

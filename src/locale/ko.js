@@ -10,4 +10,5 @@ export default {
   'app.auth.haveAccount': '아직 계정이 없으신가요?',
   'app.auth.haveNotAccount': '이미 계정이 있으신가요?',
   'app.auth.pasteSecret': '보안코드를 입력하세요',
+  'app.logo.subtitle': '여러분의 상상력을 응원합니다',
 };
