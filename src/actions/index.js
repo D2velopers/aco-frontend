@@ -17,9 +17,11 @@ const makeAsyncActionCreator = actions => {
 
 // Action Types
 export const types = {
+  AUTH_LOGIN: makeAsyncActions('AUTH_LOGIN'),
   SEARCH_RANDOM_IMG: makeAsyncActions('SEARCH_RANDOM_IMG'),
 };
 // Action Creators
 export default {
+  authLogin: makeAsyncActionCreator(types.AUTH_LOGIN),
   searchRandomImg: makeAsyncActionCreator(types.SEARCH_RANDOM_IMG),
 };

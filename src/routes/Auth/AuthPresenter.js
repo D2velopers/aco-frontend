@@ -1,54 +1,22 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import Helmet from 'react-helmet';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import Button from '../../components/Button';
-import Input from '../../components/Input';
+import { Fade, ImageSlideDiv } from '../../styles/Slideshow';
 import Logo from '../../components/Logo';
+import Button from '../../components/Button';
+import Input, { InputPropTypes } from '../../components/Input';
 
-const Fade = (num, fade, visible) => {
-  const a = 100 / ((fade + visible) * num);
-  return keyframes`
-  0% { opacity: 0; }
-  ${a * fade}% { opacity: 1; }
-  ${a * (fade + visible)}% { opacity: 1; }
-  ${a * (fade + visible + fade)}% { opacity: 0; }
-  100% { opacity: 0; }
-`;
-};
-const ImageSlideDiv = (num, fade, visible) => {
-  const loopSetChildAnimationDelay = count => {
-    let string = '';
-    for (let i = 1; i < count + 1; i++) {
-      string += `&:nth-child(${i}) {
-        animation-delay: ${(fade + visible) * (i - 1)}s;
-      }`;
-    }
-    return string;
-  };
-  return `
-    animation-duration: ${(fade + visible) * num}s;
-    animation-iteration-count: infinite;
-    ${loopSetChildAnimationDelay(num)}
-  `;
-};
-const Container = styled.div`
-  width: 100%;
-  height: 100vh;
-`;
 const Wrapper = styled.div`
-  min-height: 80vh;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  margin: 0 auto;
+  min-height: 90vh;
   z-index: 999;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  opacity: 0.9;
+  opacity: 0.95;
 `;
 const ImageSlider = styled.div`
   width: 100%;
@@ -67,8 +35,9 @@ const BackgroundImg = styled.div`
   height: 100%;
   opacity: 0;
   background-image: url(${props => props.url});
+  background-size: cover;
 `;
-const Link = styled.span`
+const Anchor = styled.span`
   color: ${props => props.theme.blueColor};
   cursor: pointer;
 `;
@@ -89,19 +58,26 @@ const Form = styled(Box)`
   flex-direction: column;
   align-items: center;
   > div {
-    margin-bottom: 40px;
+    &:first-child {
+      margin-bottom: 40px;
+    }
   }
   form {
     width: 100%;
     input {
       width: 100%;
-      &:not(:last-child) {
-        margin-bottom: 7px;
-      }
+      margin-bottom: 7px;
     }
     button {
       margin-top: 10px;
     }
+  }
+`;
+const Options = styled.div`
+  margin-top: 20px;
+  text-align: center;
+  a {
+    display: inline-block;
   }
 `;
 
@@ -109,21 +85,24 @@ const AuthPresenter = ({
   type,
   setType,
   username,
-  firstName,
-  lastName,
+  fullName,
   secret,
   email,
+  password,
   onSubmit,
+  onSkip,
+  step,
   backgroundImgs,
 }) => (
-  <Container>
-    <ImageSlider fade={1} visible={2} number={backgroundImgs.length}>
+  <>
+    <ImageSlider fade={1} visible={10} number={backgroundImgs.length}>
       {backgroundImgs.map(image => (
         <BackgroundImg key={image.id} url={image.url} />
       ))}
     </ImageSlider>
     <Wrapper>
-      <Form>
+      <Form type={type} step={step}>
+        <Logo isFull fontSize={48} />
         {type === 'logIn' && (
           <>
             <FormattedMessage id="msg.login">
@@ -133,11 +112,14 @@ const AuthPresenter = ({
                 </Helmet>
               )}
             </FormattedMessage>
-            <Logo isFull fontSize={48} />
             <form onSubmit={onSubmit}>
               <Input locale="msg.email" {...email} type="email" />
+              <Input locale="msg.password" {...password} type="password" />
               <Button locale="msg.login" />
             </form>
+            <Options>
+              <Anchor onClick={onSkip}>로그인 하지않고 둘러보기</Anchor>
+            </Options>
           </>
         )}
         {type === 'signUp' && (
@@ -150,12 +132,28 @@ const AuthPresenter = ({
               )}
             </FormattedMessage>
             <form onSubmit={onSubmit}>
-              <Input locale="msg.firstName" {...firstName} />
-              <Input locale="msg.lastName" {...lastName} />
               <Input locale="msg.email" {...email} type="email" />
-              <Input locale="msg.username" {...username} />
+              <Input locale="msg.username" {...username} type="text" />
+              <Input locale="msg.password" {...password} type="password" />
               <Button locale="msg.signup" />
             </form>
+            <Options>
+              <FormattedMessage
+                id="app.auth.policyCheck"
+                values={{
+                  tos: (
+                    <Link to="/test">
+                      <FormattedMessage id="app.help.tos" />
+                    </Link>
+                  ),
+                  dataPolicies: (
+                    <Link to="/test">
+                      <FormattedMessage id="app.help.dataPolicies" />
+                    </Link>
+                  ),
+                }}
+              />
+            </Options>
           </>
         )}
         {type === 'confirm' && (
@@ -178,39 +176,36 @@ const AuthPresenter = ({
         <StateChanger>
           {type === 'logIn' ? (
             <>
-              <FormattedMessage id="app.auth.haveNotAccount" />{' '}
-              <Link onClick={() => setType('signUp')}>
+              <FormattedMessage id="app.auth.haveAccount" />{' '}
+              <Anchor onClick={() => setType('signUp')}>
                 <FormattedMessage id="msg.signup" />
-              </Link>
+              </Anchor>
             </>
           ) : (
             <>
-              <FormattedMessage id="app.auth.haveAccount" />{' '}
-              <Link onClick={() => setType('logIn')}>
+              <FormattedMessage id="app.auth.haveNotAccount" />{' '}
+              <Anchor onClick={() => setType('logIn')}>
                 <FormattedMessage id="msg.login" />
-              </Link>
+              </Anchor>
             </>
           )}
         </StateChanger>
       )}
     </Wrapper>
-  </Container>
+  </>
 );
-const inputProps = PropTypes.shape({
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-});
 
 AuthPresenter.propTypes = {
   type: PropTypes.string,
   backgroundImg: PropTypes.array,
   setType: PropTypes.func,
   onSubmit: PropTypes.func,
-  username: inputProps,
-  firstName: inputProps,
-  lastName: inputProps,
-  secret: inputProps,
-  email: inputProps,
+  username: InputPropTypes,
+  fullName: InputPropTypes,
+  secret: InputPropTypes,
+  email: InputPropTypes,
+  password: InputPropTypes,
+  passwordConfirm: InputPropTypes,
 };
 
 export default AuthPresenter;

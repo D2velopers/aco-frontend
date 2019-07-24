@@ -4,14 +4,14 @@ import styled from 'styled-components';
 import useInput from '../hooks/useInput';
 import Input from './Input';
 import Button from './Button';
-import { Magnifier, Github } from './Icons';
+import { Magnifier } from './Icons';
 
 const Header = styled.header`
   width: 100%;
   position: sticky;
   top: 0;
   left: 0;
-  height: 80px;
+  height: 60px;
   background-color: ${props => props.theme.darkGreyColor};
   border-bottom: ${props => props.theme.boxBorder};
   border-radius: 0px;
@@ -23,7 +23,7 @@ const Header = styled.header`
 `;
 const HeaderWrapper = styled.div`
   width: 100%;
-  max-width: ${props => props.theme.maxWidth};
+  max-width: ${props => props.theme.wide};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -48,6 +48,10 @@ export default withRouter(({ history }) => {
     e.preventDefault();
     history.push(`/search?term=${search.value}`);
   };
+  const takeLogin = () => {
+    localStorage.removeItem('token')
+    window.location.reload()
+  }
   return (
     <Header>
       <HeaderWrapper>
@@ -57,7 +61,7 @@ export default withRouter(({ history }) => {
         <HeaderColumn>
           <form onSubmit={onSearchSubmit}>
             <Input
-              placeholder="Search to github..."
+              locale="msg.searchAco"
               icon={Magnifier}
               size={14}
               {...search}
@@ -65,7 +69,7 @@ export default withRouter(({ history }) => {
           </form>
         </HeaderColumn>
         <HeaderColumn>
-          <Button text="Git repo" icon={Github} />
+          <Button locale="msg.login" onClick={takeLogin}/>
         </HeaderColumn>
       </HeaderWrapper>
     </Header>

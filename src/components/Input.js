@@ -35,4 +35,9 @@ Input.propTypes = {
   type: PropTypes.string,
 };
 
+export const InputPropTypes = PropTypes.shape({
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+});
+
 export default Input;
