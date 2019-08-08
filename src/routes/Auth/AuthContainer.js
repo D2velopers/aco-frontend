@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import AuthPresenter from './AuthPresenter';
@@ -20,7 +20,7 @@ export default () => {
   useEffect(() => {
     search
       .randomImg()
-      .then(({ data: { images } }) => setImages(images))
+      .then(({ data }) => setImages(data))
       .catch(err => console.log(err));
   }, []);
   useEffect(() => {
@@ -30,6 +30,17 @@ export default () => {
     email.setValue('');
     password.setValue('');
   }, [type]);
+  const [currentItem, setCurrentItem] = useState(0);
+  const slide = () => {
+    const totalFiles = images.length;
+    if (currentItem === totalFiles - 1) {
+      setTimeout(() => setCurrentItem(0), 3000);
+    } else {
+      setTimeout(() => setCurrentItem(currentItem + 1), 3000);
+    }
+  };
+  useMemo(slide);
+
   const onSkip = () => {
     localStorage.setItem('token', 'Not available');
     window.location.reload();
@@ -40,13 +51,6 @@ export default () => {
     if (type === 'logIn') {
       if (email.value !== '') {
         // login
-        successLogin({
-          userInfo: {
-            user_id: 'test@test.com',
-            user_name: 'test',
-            token: 'test_token',
-          },
-        });
       } else {
         toast.error('Email is required');
       }
@@ -79,6 +83,7 @@ export default () => {
       onSubmit={onSubmit}
       onSkip={onSkip}
       backgroundImgs={images}
+      currentItem={currentItem}
     />
   );
 };

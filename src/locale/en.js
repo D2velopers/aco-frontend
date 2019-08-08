@@ -17,5 +17,11 @@ export default {
     "After you sign up, you agree to ACO's {tos} and {dataPolicies}.",
   'app.help.tos': 'Terms of Service',
   'app.help.dataPolicies': 'Data Policies',
+  'app.nav.recent': 'Recent',
+  'app.nav.trending': 'Trending',
+  'app.nav.follow': 'Following',
+  'app.nav.bookmark': 'Bookmark',
+  'app.nav.recommended': 'Recommended',
+  'app.nav.history': 'History',
   'app.logo.subtitle': 'Cheer your imagination',
 };

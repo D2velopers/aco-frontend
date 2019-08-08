@@ -9,36 +9,57 @@ import { Magnifier } from './Icons';
 const Header = styled.header`
   width: 100%;
   position: sticky;
+  z-index: 800;
   top: 0;
   left: 0;
   height: 60px;
-  background-color: ${props => props.theme.darkGreyColor};
-  border-bottom: ${props => props.theme.boxBorder};
+  background-color: ${({ theme }) => theme.darkGreyColor};
   border-radius: 0px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 25px 0px;
-  z-index: 2;
 `;
 const HeaderWrapper = styled.div`
   width: 100%;
-  max-width: ${props => props.theme.wide};
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 const HeaderColumn = styled.div`
   display: flex;
-  flex: 1;
-  &:first-child {
-    justify-content: flex-start;
-  }
+  align-items: center;
+  flex: ${({ main }) => (main ? 1 : 0)};
+  margin-left: ${({ theme }) => theme.globalSpace};
   &:last-child {
-    justify-content: flex-end;
+    margin: 0 ${({ theme }) => theme.globalSpace};
   }
-  form {
-    width: 100%;
+  > * {
+    &:not(:last-child) {
+      margin-right: ${({ theme }) => theme.globalSpace};
+    }
+  }
+`;
+const InputWrapper = styled.form`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  > * {
+    &:not(:last-child) {
+      margin-right: ${({ theme }) => theme.globalSpace};
+    }
+  }
+  input {
+    width: 225px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: width 0.2s;
+    &:focus {
+      width: 470px;
+      background-color: rgba(255, 255, 255, 1);
+    }
+    &::placeholder {
+      color: ${({ theme }) => theme.greyColor};
+    }
   }
 `;
 
@@ -49,27 +70,28 @@ export default withRouter(({ history }) => {
     history.push(`/search?term=${search.value}`);
   };
   const takeLogin = () => {
-    localStorage.removeItem('token')
-    window.location.reload()
-  }
+    localStorage.removeItem('token');
+    window.location.reload();
+  };
   return (
     <Header>
       <HeaderWrapper>
         <HeaderColumn>
           <Link to="/">logo</Link>
         </HeaderColumn>
-        <HeaderColumn>
-          <form onSubmit={onSearchSubmit}>
+        <HeaderColumn main>
+          <InputWrapper onSubmit={onSearchSubmit}>
             <Input
               locale="msg.searchAco"
               icon={Magnifier}
               size={14}
               {...search}
             />
-          </form>
+            <Link to="#">커미션</Link>
+          </InputWrapper>
         </HeaderColumn>
         <HeaderColumn>
-          <Button locale="msg.login" onClick={takeLogin}/>
+          <Button locale="msg.login" onClick={takeLogin} />
         </HeaderColumn>
       </HeaderWrapper>
     </Header>

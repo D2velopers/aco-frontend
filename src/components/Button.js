@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 
 const Container = styled.button`
+  min-width: 7.5rem;
   width: 100%;
   border: 0;
   border-radius: ${props => props.theme.borderRadius};

@@ -5,5 +5,6 @@ axios.defaults.headers.common['Authorization'] = `
   Bearer ${localStorage.getItem('token')}
 `;
 axios.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8';
+axios.defaults.headers.common['x-api-key'] = 'DEMO-API-KEY';
 
 export { search };

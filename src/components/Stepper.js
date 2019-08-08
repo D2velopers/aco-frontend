@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;
+  z-index: 2;
 `;
 const Dot = styled.div`
   background-color: ${props =>
@@ -14,7 +15,7 @@ const Dot = styled.div`
   border-radius: 50%;
 `;
 
-const Stepper = ({ list, currentIndex, color }) => (
+const Stepper = ({ list, currentIndex }) => (
   <Container>
     {list.map((item, index) => (
       <Dot key={`dot_${index}`} isActive={currentIndex === index} />

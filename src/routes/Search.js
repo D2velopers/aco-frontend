@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import action from '../actions';
 import Loader from '../components/Loader';
-import Template from '../components/PageTemplate';
 import RepoCard from '../components/RepoCard';
 
 const RepoList = styled.div`
@@ -33,7 +32,7 @@ const Search = ({ location: { search } }) => {
     data: { items },
   } = useSelector(({ searchReducer }) => searchReducer);
   return (
-    <Template>
+    <>
       {status === 'pending' && <Loader />}
       {status === 'success' && (
         <>
@@ -53,7 +52,7 @@ const Search = ({ location: { search } }) => {
           </RepoList>
         </>
       )}
-    </Template>
+    </>
   );
 };
 

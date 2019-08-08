@@ -17,5 +17,11 @@ export default {
     '가입하면 ACO의 {tos} 및 {dataPolicies}에 동의하게 됩니다.',
   'app.help.tos': '약관',
   'app.help.dataPolicies': '데이터 정책',
+  'app.nav.recent': '최신',
+  'app.nav.trending': '트렌드',
+  'app.nav.follow': '팔로잉',
+  'app.nav.bookmark': '북마크',
+  'app.nav.recommended': '추천',
+  'app.nav.history': '열람내역',
   'app.logo.subtitle': '여러분의 상상력을 응원합니다',
 };

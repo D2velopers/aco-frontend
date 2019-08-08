@@ -4,11 +4,24 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import { Fade, ImageSlideDiv } from '../../styles/Slideshow';
 import Logo from '../../components/Logo';
 import Button from '../../components/Button';
 import Input, { InputPropTypes } from '../../components/Input';
 
+const Slideshow = styled.div`
+  width: 100%;
+  height: 100%;
+`;
+const Item = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-image: url(${props => props.src});
+  background-size: cover;
+  background-position: top;
+  opacity: ${props => (props.showing ? 1 : 0)};
+  transition: opacity 0.5s;
+`;
 const Wrapper = styled.div`
   min-height: 90vh;
   z-index: 999;
@@ -17,25 +30,6 @@ const Wrapper = styled.div`
   justify-content: center;
   flex-direction: column;
   opacity: 0.95;
-`;
-const ImageSlider = styled.div`
-  width: 100%;
-  height: 100%;
-  div {
-    animation-name: ${({ number, fade, visible }) =>
-      Fade(number, fade, visible)};
-    ${({ number, fade, visible }) => ImageSlideDiv(number, fade, visible)};
-  }
-`;
-const BackgroundImg = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  background-image: url(${props => props.url});
-  background-size: cover;
 `;
 const Anchor = styled.span`
   color: ${props => props.theme.blueColor};
@@ -62,15 +56,11 @@ const Form = styled(Box)`
       margin-bottom: 40px;
     }
   }
-  form {
-    width: 100%;
-    input {
-      width: 100%;
-      margin-bottom: 7px;
-    }
-    button {
-      margin-top: 10px;
-    }
+  input {
+    margin-bottom: 7px;
+  }
+  button {
+    margin-top: 10px;
   }
 `;
 const Options = styled.div`
@@ -93,107 +83,115 @@ const AuthPresenter = ({
   onSkip,
   step,
   backgroundImgs,
-}) => (
-  <>
-    <ImageSlider fade={1} visible={10} number={backgroundImgs.length}>
-      {backgroundImgs.map(image => (
-        <BackgroundImg key={image.id} url={image.url} />
-      ))}
-    </ImageSlider>
-    <Wrapper>
-      <Form type={type} step={step}>
-        <Logo isFull fontSize={48} />
-        {type === 'logIn' && (
-          <>
-            <FormattedMessage id="msg.login">
-              {title => (
-                <Helmet>
-                  <title>{`${title} | ACO`}</title>
-                </Helmet>
-              )}
-            </FormattedMessage>
-            <form onSubmit={onSubmit}>
-              <Input locale="msg.email" {...email} type="email" />
-              <Input locale="msg.password" {...password} type="password" />
-              <Button locale="msg.login" />
-            </form>
-            <Options>
-              <Anchor onClick={onSkip}>로그인 하지않고 둘러보기</Anchor>
-            </Options>
-          </>
-        )}
-        {type === 'signUp' && (
-          <>
-            <FormattedMessage id="msg.signup">
-              {title => (
-                <Helmet>
-                  <title>{`${title} | ACO`}</title>
-                </Helmet>
-              )}
-            </FormattedMessage>
-            <form onSubmit={onSubmit}>
-              <Input locale="msg.email" {...email} type="email" />
-              <Input locale="msg.username" {...username} type="text" />
-              <Input locale="msg.password" {...password} type="password" />
-              <Button locale="msg.signup" />
-            </form>
-            <Options>
-              <FormattedMessage
-                id="app.auth.policyCheck"
-                values={{
-                  tos: (
-                    <Link to="/test">
-                      <FormattedMessage id="app.help.tos" />
-                    </Link>
-                  ),
-                  dataPolicies: (
-                    <Link to="/test">
-                      <FormattedMessage id="app.help.dataPolicies" />
-                    </Link>
-                  ),
-                }}
-              />
-            </Options>
-          </>
-        )}
-        {type === 'confirm' && (
-          <>
-            <FormattedMessage id="msg.confirmSecret">
-              {title => (
-                <Helmet>
-                  <title>{`${title} | ACO`}</title>
-                </Helmet>
-              )}
-            </FormattedMessage>
-            <form onSubmit={onSubmit}>
-              <Input locale="app.auth.pasteSecret" required {...secret} />
-              <Button locale="msg.confirm" />
-            </form>
-          </>
-        )}
-      </Form>
-      {type !== 'confirm' && (
-        <StateChanger>
-          {type === 'logIn' ? (
+  currentItem,
+}) => {
+  return (
+    <>
+      <Slideshow>
+        {backgroundImgs.map((item, index) => (
+          <Item
+            key={item.id}
+            id={item.id}
+            src={item.url}
+            showing={index === currentItem}
+          />
+        ))}
+      </Slideshow>
+      <Wrapper>
+        <Form type={type} step={step}>
+          <Logo isFull fontSize={48} />
+          {type === 'logIn' && (
             <>
-              <FormattedMessage id="app.auth.haveAccount" />{' '}
-              <Anchor onClick={() => setType('signUp')}>
-                <FormattedMessage id="msg.signup" />
-              </Anchor>
-            </>
-          ) : (
-            <>
-              <FormattedMessage id="app.auth.haveNotAccount" />{' '}
-              <Anchor onClick={() => setType('logIn')}>
-                <FormattedMessage id="msg.login" />
-              </Anchor>
+              <FormattedMessage id="msg.login">
+                {title => (
+                  <Helmet>
+                    <title>{`${title} | ACO`}</title>
+                  </Helmet>
+                )}
+              </FormattedMessage>
+              <form onSubmit={onSubmit}>
+                <Input locale="msg.email" {...email} type="email" />
+                <Input locale="msg.password" {...password} type="password" />
+                <Button locale="msg.login" />
+              </form>
+              <Options>
+                <Anchor onClick={onSkip}>로그인 하지않고 둘러보기</Anchor>
+              </Options>
             </>
           )}
-        </StateChanger>
-      )}
-    </Wrapper>
-  </>
-);
+          {type === 'signUp' && (
+            <>
+              <FormattedMessage id="msg.signup">
+                {title => (
+                  <Helmet>
+                    <title>{`${title} | ACO`}</title>
+                  </Helmet>
+                )}
+              </FormattedMessage>
+              <form onSubmit={onSubmit}>
+                <Input locale="msg.email" {...email} type="email" />
+                <Input locale="msg.username" {...username} type="text" />
+                <Input locale="msg.password" {...password} type="password" />
+                <Button locale="msg.signup" />
+              </form>
+              <Options>
+                <FormattedMessage
+                  id="app.auth.policyCheck"
+                  values={{
+                    tos: (
+                      <Link to="/test">
+                        <FormattedMessage id="app.help.tos" />
+                      </Link>
+                    ),
+                    dataPolicies: (
+                      <Link to="/test">
+                        <FormattedMessage id="app.help.dataPolicies" />
+                      </Link>
+                    ),
+                  }}
+                />
+              </Options>
+            </>
+          )}
+          {type === 'confirm' && (
+            <>
+              <FormattedMessage id="msg.confirmSecret">
+                {title => (
+                  <Helmet>
+                    <title>{`${title} | ACO`}</title>
+                  </Helmet>
+                )}
+              </FormattedMessage>
+              <form onSubmit={onSubmit}>
+                <Input locale="app.auth.pasteSecret" required {...secret} />
+                <Button locale="msg.confirm" />
+              </form>
+            </>
+          )}
+        </Form>
+        {type !== 'confirm' && (
+          <StateChanger>
+            {type === 'logIn' ? (
+              <>
+                <FormattedMessage id="app.auth.haveAccount" />{' '}
+                <Anchor onClick={() => setType('signUp')}>
+                  <FormattedMessage id="msg.signup" />
+                </Anchor>
+              </>
+            ) : (
+              <>
+                <FormattedMessage id="app.auth.haveNotAccount" />{' '}
+                <Anchor onClick={() => setType('logIn')}>
+                  <FormattedMessage id="msg.login" />
+                </Anchor>
+              </>
+            )}
+          </StateChanger>
+        )}
+      </Wrapper>
+    </>
+  );
+};
 
 AuthPresenter.propTypes = {
   type: PropTypes.string,

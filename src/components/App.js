@@ -10,7 +10,6 @@ import Theme from '../styles/Theme';
 
 const Wrapper = styled.div`
   margin: 0 auto;
-  max-width: ${props => props.theme.wide};
   width: 100%;
 `;
 

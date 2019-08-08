@@ -11,6 +11,7 @@ const Container = styled.input`
   height: 35px;
   font-size: 12px;
   padding: 0px 15px;
+  width: 100%;
 `;
 
 const Input = ({ locale, required = true, value, onChange, type = 'text' }) => (
