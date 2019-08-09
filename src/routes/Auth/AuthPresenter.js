@@ -16,10 +16,10 @@ const Item = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
-  background-image: url(${props => props.src});
+  background-image: url(${({ src }) => src});
   background-size: cover;
   background-position: top;
-  opacity: ${props => (props.showing ? 1 : 0)};
+  opacity: ${({ showing }) => (showing ? 1 : 0)};
   transition: opacity 0.5s;
 `;
 const Wrapper = styled.div`
@@ -32,11 +32,13 @@ const Wrapper = styled.div`
   opacity: 0.95;
 `;
 const Anchor = styled.span`
-  color: ${props => props.theme.blueColor};
+  color: ${({ theme }) => theme.blueColor};
   cursor: pointer;
 `;
 const Box = styled.div`
-  ${props => props.theme.whiteBox}
+  @media ${({ theme }) => theme.tablet} {
+    ${({ theme }) => theme.whiteBox}
+  }
   width: 100%;
   max-width: 350px;
 `;

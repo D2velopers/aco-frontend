@@ -10,10 +10,14 @@ const Wrapper = styled.nav`
   position: sticky;
   top: 60px;
   display: flex;
+  @media ${({ theme }) => theme.tablet} {
+    justify-content: initial;
+  }
   justify-content: center;
   align-items: center;
   z-index: 500;
   background-color: white;
+  padding: 0 ${({ theme }) => theme.globalSpace};
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 0 1px rgba(1, 0, 0, 0.1);
   ul {
     height: 100%;

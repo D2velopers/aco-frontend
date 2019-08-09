@@ -18,10 +18,12 @@ export default () => {
   const password = useInput('');
 
   useEffect(() => {
-    search
-      .randomImg()
-      .then(({ data }) => setImages(data))
-      .catch(err => console.log(err));
+    if (!navigator.maxTouchPoints) {
+      search
+        .randomImg()
+        .then(({ data }) => setImages(data))
+        .catch(err => console.log(err));
+    }
   }, []);
   useEffect(() => {
     username.setValue('');

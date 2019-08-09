@@ -4,15 +4,12 @@ import styled from 'styled-components';
 const MasonryDiv = styled.div`
   display: grid;
   grid-auto-flow: column;
-  grid-gap: ${props => props.gap || `2em`};
-  margin: 2em auto;
-  @media ${({ theme }) => theme.laptopL} {
-    max-width: 1320px;
-  }
+  grid-gap: ${({ theme }) => theme.globalSpace};
+  margin: ${({ theme }) => theme.globalSpace};
 `;
 const Col = styled.div`
   display: grid;
-  grid-gap: ${props => props.gap || `2em`};
+  grid-gap: ${({ theme }) => theme.globalSpace};
   grid-auto-rows: max-content;
 `;
 
@@ -21,7 +18,7 @@ const createCols = (children, cols, numCols) => {
   children.forEach((child, i) => cols[i % numCols].push(child));
 };
 
-export default ({ children, gap, minWidth = 500 }) => {
+export default ({ children, minWidth = 500 }) => {
   const cols = [];
   const ref = useRef();
   const [numCols, setNumCols] = useState(3);
@@ -36,11 +33,9 @@ export default ({ children, gap, minWidth = 500 }) => {
   }, [minWidth]);
 
   return (
-    <MasonryDiv ref={ref} gap={gap}>
+    <MasonryDiv ref={ref}>
       {Array.from({ length: numCols }, (_, index) => (
-        <Col key={index} gap={gap}>
-          {cols[index]}
-        </Col>
+        <Col key={index}>{cols[index]}</Col>
       ))}
     </MasonryDiv>
   );

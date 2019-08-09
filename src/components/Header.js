@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import useInput from '../hooks/useInput';
 import Input from './Input';
@@ -22,16 +23,16 @@ const Header = styled.header`
 const HeaderWrapper = styled.div`
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  padding: 0 ${({ theme }) => theme.globalSpace};
 `;
 const HeaderColumn = styled.div`
   display: flex;
   align-items: center;
   flex: ${({ main }) => (main ? 1 : 0)};
-  margin-left: ${({ theme }) => theme.globalSpace};
-  &:last-child {
-    margin: 0 ${({ theme }) => theme.globalSpace};
+  &:not(:last-child) {
+    margin-right: ${({ theme }) => theme.globalSpace};
   }
   > * {
     &:not(:last-child) {
@@ -62,9 +63,24 @@ const InputWrapper = styled.form`
     }
   }
 `;
+const Desktop = styled(HeaderWrapper)`
+  display: none;
+  @media ${({ theme }) => theme.tablet} {
+    display: flex;
+  }
+`;
+const Mobile = styled(HeaderWrapper)`
+  display: flex;
+  @media ${({ theme }) => theme.tablet} {
+    display: none;
+  }
+`;
 
 export default withRouter(({ history }) => {
   const search = useInput('');
+  const { user_id, user_name } = useSelector(
+    ({ authReducer }) => authReducer.userInfo
+  );
   const onSearchSubmit = e => {
     e.preventDefault();
     history.push(`/search?term=${search.value}`);
@@ -75,7 +91,7 @@ export default withRouter(({ history }) => {
   };
   return (
     <Header>
-      <HeaderWrapper>
+      <Desktop>
         <HeaderColumn>
           <Link to="/">logo</Link>
         </HeaderColumn>
@@ -91,9 +107,17 @@ export default withRouter(({ history }) => {
           </InputWrapper>
         </HeaderColumn>
         <HeaderColumn>
-          <Button locale="msg.login" onClick={takeLogin} />
+          {user_id ? <></> : <Button locale="msg.login" onClick={takeLogin} />}
         </HeaderColumn>
-      </HeaderWrapper>
+      </Desktop>
+
+      <Mobile>
+        <Link>menu</Link>
+        <Link>btn</Link>
+        <Link>logo</Link>
+        <Link>btn</Link>
+        <Link>user</Link>
+      </Mobile>
     </Header>
   );
 });

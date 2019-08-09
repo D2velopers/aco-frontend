@@ -18,7 +18,7 @@ export default {
   laptop: `(min-width: ${size.laptop})`,
   laptopL: `(min-width: ${size.laptopL})`,
   desktop: `(min-width: ${size.desktop})`,
-  globalSpace: '1.5rem',
+  globalSpace: '2em',
   bgColor: '#fafafa',
   blueColor: '#61dafb;',
   greyColor: '#999',
