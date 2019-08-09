@@ -27,7 +27,11 @@ const Banner = styled.div`
 const BannerControl = styled.button`
   z-index: 2;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.1);
+  background: linear-gradient(
+    ${({ prev }) => (prev ? 'to left' : 'to right')},
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.3)
+  );
   border: 0;
   padding: 0 5px;
   width: 5vw;
@@ -94,13 +98,13 @@ const GalleryPresenter = ({
             showing={index === currentEvent}
           />
         ))}
-      <BannerControl onClick={bannerControl.prev}>
+      <BannerControl prev onClick={bannerControl.prev}>
         <span style={{ marginLeft: '0.6vw', transform: 'rotate(45deg)' }} />
       </BannerControl>
       <BannerStepperWrapper>
         <Stepper list={events} currentIndex={currentEvent} />
       </BannerStepperWrapper>
-      <BannerControl onClick={bannerControl.next}>
+      <BannerControl next onClick={bannerControl.next}>
         <span style={{ marginRight: '1.2vw', transform: 'rotate(-135deg)' }} />
       </BannerControl>
     </Banners>

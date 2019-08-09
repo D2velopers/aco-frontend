@@ -28,7 +28,7 @@ const MainMenu = styled.ul`
 `;
 const SubMenu = styled.ul`
   display: flex;
-  overflow-x: scroll;
+  overflow-x: auto;
 `;
 const Divider = styled.div`
   width: 1px;
