@@ -28,6 +28,7 @@ const MainMenu = styled.ul`
 `;
 const SubMenu = styled.ul`
   display: flex;
+  overflow-x: scroll;
 `;
 const Divider = styled.div`
   width: 1px;
@@ -36,23 +37,27 @@ const Divider = styled.div`
   background-color: ${props => props.theme.lightGreyColor};
 `;
 const Item = styled.li`
-  margin: 0 0.5rem;
-  height: 100%;
+  &:not(:last-child) {
+    margin-right: 1rem;
+  }
+  white-space: nowrap;
 `;
 const Link = styled(NavLink)`
-  transition: color 0.3s;
-  padding: 0.8rem 0;
-  height: 100%;
   display: flex;
+  height: 100%;
   align-items: center;
-  border-bottom: none;
+  border-bottom: 2px solid transparent;
   color: ${({ theme }) => theme.greyColor};
+  transition: color 0.3s;
   &:hover {
     color: black;
   }
   &.active {
     border-bottom: 2px solid black;
     color: black;
+  }
+  span {
+    line-height: 1;
   }
 `;
 
