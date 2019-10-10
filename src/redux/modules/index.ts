@@ -1,10 +1,9 @@
 import { combineReducers } from 'redux';
-import search from './search/reducer';
-import { searchSaga } from './search';
+import auth, { githubSaga } from './auth';
 import { all } from 'redux-saga/effects';
 
 const rootReducer = combineReducers({
-  search,
+  auth,
 });
 
 export default rootReducer;
@@ -12,5 +11,5 @@ export default rootReducer;
 export type RootState = ReturnType<typeof rootReducer>;
 
 export function* rootSaga() {
-  yield all([searchSaga()]);
+  yield all([githubSaga()]);
 }

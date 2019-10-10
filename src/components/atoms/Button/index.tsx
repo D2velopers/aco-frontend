@@ -8,7 +8,6 @@ interface Props {
 }
 
 const Wrapper = styled.button`
-  min-width: 7.5rem;
   width: 100%;
   border: 0;
   border-radius: ${props => props.theme.styles.borderRadius};
@@ -16,7 +15,7 @@ const Wrapper = styled.button`
   font-weight: 600;
   background-color: ${props => props.theme.hlColors.main};
   text-align: center;
-  padding: 7px 0px;
+  padding: 7px 14px;
   font-size: 14px;
   cursor: pointer;
 `;

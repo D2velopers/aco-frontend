@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useInput } from '../../lib/hooks';
 import { AuthForm } from '../../components/organisms';
 
-export default function Auth() {
+export default function SignUp() {
   const username = useInput('');
   const email = useInput('');
   const password = useInput('');

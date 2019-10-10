@@ -14,15 +14,18 @@ interface Props {
   links: NavProps;
 }
 
-const Wrapper = styled.header`
-  width: 100%;
+const Position = styled.div`
   background-color: ${props => props.theme.bgColors.secondary};
   position: sticky;
   top: ${props => props.theme.sizes.header};
   left: 0;
+`;
+const Wrapper = styled.nav`
+  max-width: ${props => props.theme.sizes.contentsMaxWidth};
+  width: 100%;
+  margin: 0 auto;
   display: flex;
   align-items: center;
-  padding: ${props => props.theme.spaces.aside};
 `;
 const MainMenu = styled.ul`
   display: flex;
@@ -45,26 +48,28 @@ const Divider = styled.div`
 
 export function Nav({ links }: Props) {
   return (
-    <Wrapper>
-      <MainMenu>
-        {links.main.map(({ to, localeId }) => (
-          <li key={localeId}>
-            <UnderlineMenuItem to={to} localeId={localeId} />
-          </li>
-        ))}
-      </MainMenu>
-      {links.sub && (
-        <>
-          <Divider />
-          <SubMenu>
-            {links.sub.map(({ to, localeId }) => (
-              <li key={localeId}>
-                <UnderlineMenuItem to={to} localeId={localeId} />
-              </li>
-            ))}
-          </SubMenu>
-        </>
-      )}
-    </Wrapper>
+    <Position>
+      <Wrapper>
+        <MainMenu>
+          {links.main.map(({ to, localeId }) => (
+            <li key={localeId}>
+              <UnderlineMenuItem to={to} localeId={localeId} />
+            </li>
+          ))}
+        </MainMenu>
+        {links.sub && (
+          <>
+            <Divider />
+            <SubMenu>
+              {links.sub.map(({ to, localeId }) => (
+                <li key={localeId}>
+                  <UnderlineMenuItem to={to} localeId={localeId} />
+                </li>
+              ))}
+            </SubMenu>
+          </>
+        )}
+      </Wrapper>
+    </Position>
   );
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Nav, NavProps } from '../../components/organisms';
+import { Nav, NavProps } from '../components/organisms';
 
 interface Link {
   to: string;

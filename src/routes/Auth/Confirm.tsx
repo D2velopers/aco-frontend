@@ -2,7 +2,7 @@ import React from 'react';
 import { useInput } from '../../lib/hooks';
 import { AuthForm } from '../../components/organisms';
 
-export default function Auth() {
+export default function Confirm() {
   const secret = useInput('');
 
   function handleConfirm() {

@@ -1,11 +1,17 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
-import { useInput } from '../../../lib/hooks/useInput';
+import { InputTypes } from '../../../lib/hooks';
 import { Button, MenuItem } from '../../atoms';
 import { FlexibleInput } from '../../atoms/Input';
 
-const Header = styled.header`
+interface Props {
+  user: any;
+  search: InputTypes;
+  onSearchSubmit(e: React.FormEvent<HTMLFormElement>): void;
+  onLogin(): void;
+}
+
+const Position = styled.header`
   width: 100%;
   background-color: ${props => props.theme.bgColors.header};
   position: sticky;
@@ -39,21 +45,14 @@ const Column = styled.div`
   }
 `;
 
-export default withRouter(({ history }) => {
-  const search = useInput('');
-  /* const { user_id, user_name } = useSelector(
-    ({ authReducer }) => authReducer.userInfo
-  ); */
-  const onSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    history.push(`/search?term=${search.value}`);
-  };
-  const takeLogin = () => {
-    localStorage.removeItem('token');
-    window.location.reload();
-  };
+export default function Header({
+  user,
+  search,
+  onSearchSubmit,
+  onLogin,
+}: Props) {
   return (
-    <Header>
+    <Position>
       <Desktop>
         <Column>
           <MenuItem to="/" localeId="app.fullName" />
@@ -69,7 +68,14 @@ export default withRouter(({ history }) => {
           <MenuItem to="#" localeId="app.fullName" />
         </Column>
         <Column>
-          <Button localeId="app.login" onClick={takeLogin} />
+          {user ? (
+            <>
+              <MenuItem to={`/upload`} localeId="app.fullName" />
+              <MenuItem to={`@${user.login}`} localeId="app.fullName" />
+            </>
+          ) : (
+            <Button localeId="app.login" onClick={onLogin} />
+          )}
         </Column>
       </Desktop>
       <Mobile>
@@ -79,6 +85,6 @@ export default withRouter(({ history }) => {
         <MenuItem to="#" localeId="app.fullName" />
         <MenuItem to="#" localeId="app.fullName" />
       </Mobile>
-    </Header>
+    </Position>
   );
-});
+}

@@ -1,15 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface Props {
+interface Style {
+  size?: number;
+}
+
+interface Props extends Style {
   src: string;
   alt: string;
 }
 
-const Wrapper = styled.div`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+const Wrapper = styled.div<Style>`
+  width: ${props => props.size}px;
+  height: ${props => props.size}px;
   margin-bottom: 15px;
 `;
 const Img = styled.img`
@@ -18,11 +21,12 @@ const Img = styled.img`
   background-size: cover;
   background-color: #ffffff;
   background-repeat: no-repeat;
+  border-radius: 50%;
 `;
 
-export function Avatar({ src, alt }: Props) {
+export function Avatar({ size = 50, src, alt }: Props) {
   return (
-    <Wrapper>
+    <Wrapper size={size}>
       <Img src={src} alt={alt} />
     </Wrapper>
   );

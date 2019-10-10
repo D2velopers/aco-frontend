@@ -6,7 +6,7 @@ import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 interface Essential {
-  onSubmit(): void;
+  onSubmit(e: React.FormEvent<HTMLFormElement>): void;
 }
 interface Login extends Essential {
   email: InputTypes;
@@ -61,7 +61,7 @@ function Login({ onSubmit, onSkip, email, password }: Login) {
         <Helmet localeId="app.login" />
         <Logo isFull />
         <Form onSubmit={onSubmit}>
-          <Input required type="email" localeId="app.email" {...email} />
+          <Input required type="text" localeId="app.email" {...email} />
           <Input
             required
             type="password"
